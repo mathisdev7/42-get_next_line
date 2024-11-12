@@ -6,84 +6,60 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:01:30 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/11 16:19:22 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/12 10:37:17 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
-#define BUFFER_SIZE 1024
-
-int ft_strlen(char *str)
+size_t	ft_strlen(const char *str)
 {
-	int i = 0;
+	size_t	i;
+
+	i = 0;
 	while (str[i])
 		i++;
 	return (i);
 }
 
-char *get_next_line(int fd)
+char	*fill_stash(int fd, char *stash)
 {
-	ssize_t		i;
-	int			j;
-    char		*buf;
-	static char	*stash;
-	ssize_t		fd_read;
-	char		*result;
-    
-	buf = malloc(BUFFER_SIZE + 1);
-	if (!buf)
-		return (NULL);
+	int		bytes_read;
+	char	*buffer;
 
+	buffer = malloc(sizeof(char *) * BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	bytes_read = 1;
+	while ((!ft_strchr(buffer, '\n')) && bytes_read != 0)
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			perror("read");
+			free(buffer);
+			return (NULL);
+		}
+		buffer[bytes_read] = '\0';
+		stash = ft_strjoin(stash, buffer);
+	}
+	free(buffer);
+	return (stash);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash;
+	char		*line;
+
+	if (BUFFER_SIZE <= 0 || fd < 0)
+		return (NULL);
+	stash = fill_stash(fd, stash);
 	if (!stash)
-		stash = malloc(BUFFER_SIZE + 1);
-	result = malloc(ft_strlen(stash) + BUFFER_SIZE + 1);
-	if (!result || !stash)
-	{
-		free(buf);
 		return (NULL);
-	}
-	i = 0;
-	fd_read = read(fd, buf, BUFFER_SIZE);
-	if (fd_read == -1)
-	{
-		perror("read");
-		free(buf);
-		free(result);
-		return (NULL);
-	}
-	buf[fd_read] = '\0';
-	while (stash[i])
-	{
-		result[i] = stash[i];
-		fd_read -= 1;
-		i++;
-	}
-	result[i] = '\0';
-	j = 0;
-	while (j < fd_read && buf[j] && buf[j] != '\n')
-		result[i++] = buf[j++];
-	if (buf[j] == '\n')
-	{
-		result[i + 1] = buf[j];
-		i++;
-		j++;
-	}
-	result[i] = '\0';
-	i = 0;
-	while (buf[j])
-	{
-		if (buf[j] != '\n')
-			stash[i++] = buf[j];
-		j++;
-	}
-	stash[i] = '\0';
-	free(buf);
-    return (result);
+	line = fill_line(stash);
+	stash = create_stash(stash);
+	return (line);
 }
 
 int main(void)
@@ -91,24 +67,16 @@ int main(void)
     char *fileName = "./test.txt";
     int fd = open(fileName, O_RDWR);
 	int i = 0;
-	int k = 0;
 
     if (fd == -1) {
         perror("open");
         return 1;
     }
-	while (i < 12)
+	while (i < 50000)
 	{
 		char *line = get_next_line(fd);
 		if (line)
 		{
-			while (line[k])
-			{
-				if (line[k] == '\n')
-					printf("backslash detected.\n");
-				k++;
-			}
-			k = 0;
 			printf("%d. %s\n", i, line);
 		}
 		else
