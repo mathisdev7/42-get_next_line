@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 15:25:59 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/12 10:29:51 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:27:41 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ char	*ft_strchr(const char *s, int c)
 
 char	*create_stash(char *stash)
 {
-	int	i;
-	int	j;
-	char *new_stash;
+	int		i;
+	int		j;
+	char	*new_stash;
 
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
@@ -58,8 +58,8 @@ char	*create_stash(char *stash)
 
 char	*fill_line(char *stash)
 {
-	int	i;
-	char *line;
+	int		i;
+	char	*line;
 
 	i = 0;
 	if (!stash[0])

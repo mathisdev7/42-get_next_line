@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:01:30 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/12 10:37:17 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:28:02 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*get_next_line(int fd)
 	stash = create_stash(stash);
 	return (line);
 }
-
+/*
 int main(void)
 {
     char *fileName = "./test.txt";
@@ -87,3 +87,4 @@ int main(void)
     close(fd);
     return 0;
 }
+*/
