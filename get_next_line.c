@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:01:30 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/12 13:28:02 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:03:18 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*fill_stash(int fd, char *stash)
 	int		bytes_read;
 	char	*buffer;
 
-	buffer = malloc(sizeof(char *) * BUFFER_SIZE + 1);
+	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	bytes_read = 1;
@@ -36,7 +36,6 @@ char	*fill_stash(int fd, char *stash)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
 		{
-			perror("read");
 			free(buffer);
 			return (NULL);
 		}
@@ -64,24 +63,22 @@ char	*get_next_line(int fd)
 /*
 int main(void)
 {
-    char *fileName = "./test.txt";
+    char *fileName = "./get_next_line.c";
     int fd = open(fileName, O_RDWR);
-	int i = 0;
 
     if (fd == -1) {
         perror("open");
         return 1;
     }
-	while (i < 50000)
+	while (1)
 	{
 		char *line = get_next_line(fd);
 		if (line)
 		{
-			printf("%d. %s\n", i, line);
+			printf("%s", line);
 		}
 		else
 			break;
-		i++;
 		free(line);
 	}
     close(fd);

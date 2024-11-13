@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 15:25:59 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/12 13:27:41 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:18:24 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*create_stash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	new_stash = malloc(sizeof(char *) * ft_strlen(stash) - i + 1);
+	new_stash = malloc(sizeof(char) * ft_strlen(stash) - i + 1);
 	i++;
 	if (!new_stash)
 	{
@@ -66,7 +66,7 @@ char	*fill_line(char *stash)
 		return (NULL);
 	while (stash[i] && stash[i] != '\n')
 		i++;
-	line = malloc(sizeof(char *) * (i + 2));
+	line = malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -90,23 +90,25 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	j;
 	char	*result;
 
-	i = -1;
-	j = 0;
 	if (!s1)
 	{
-		s1 = (char *)(malloc(sizeof(char)));
+		s1 = malloc(1);
+		if (!s1)
+			return (NULL);
 		s1[0] = '\0';
 	}
-	if (!s1 || !s2)
+	if (!s2)
 		return (NULL);
-	result = malloc(sizeof(char *) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
+	result = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!result)
-		return (NULL);
-	if (s1)
-		while (s1[++i])
-			result[i] = s1[i];
-	while (s2[j] != '\0')
+		return (free(s1), NULL);
+	i = -1;
+	j = 0;
+	while (s1[++i])
+		result[i] = s1[i];
+	while (s2[j])
 		result[i++] = s2[j++];
-	result[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	result[i] = '\0';
+	free(s1);
 	return (result);
 }

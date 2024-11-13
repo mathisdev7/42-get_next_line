@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:02:09 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/12 13:30:24 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:03:55 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ char	*ft_strchr(const char *s, int c);
 char	*fill_line(char *stash);
 char	*create_stash(char *stash);
 char	*ft_strjoin(char *s1, char *s2);
+char	*get_next_line(int fd);
 
 #endif
