@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:01:30 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/13 22:03:18 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:33:16 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*fill_stash(int fd, char *stash)
 	if (!buffer)
 		return (NULL);
 	bytes_read = 1;
-	while ((!ft_strchr(buffer, '\n')) && bytes_read != 0)
+	while (!ft_strchr(buffer, '\n') && bytes_read != 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
