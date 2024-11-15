@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 15:25:59 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/13 22:28:23 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:50:02 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,24 @@ char	*ft_strchr(const char *s, int c)
 	int	i;
 
 	i = 0;
-	while (s[i])
+	if (!s)
+		return (0);
+	if (c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[i] != '\0')
 	{
-		if (s[i] == (char)c)
-			return ((char *)(&s[i]));
+		if (s[i] == (char) c)
+			return ((char *)&s[i]);
 		i++;
 	}
-	if ((char)c == '\0')
-		return ((char *)(&s[i]));
-	return (NULL);
+	return (0);
 }
 
 char	*create_stash(char *stash)
 {
 	int		i;
 	int		j;
-	char	*new_stash;
+	char	*result;
 
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
@@ -42,18 +44,15 @@ char	*create_stash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	new_stash = malloc(sizeof(char) * ft_strlen(stash) - i + 1);
-	i++;
-	if (!new_stash)
-	{
-		free(new_stash);
+	result = (char *)malloc(sizeof(char) * (ft_strlen(stash) - i++));
+	if (!result)
 		return (NULL);
-	}
 	j = 0;
 	while (stash[i])
-		new_stash[j++] = stash[i++];
-	new_stash[j] = '\0';
-	return (new_stash);
+		result[j++] = stash[i++];
+	result[j] = '\0';
+	free(stash);
+	return (result);
 }
 
 char	*fill_line(char *stash)
@@ -62,11 +61,11 @@ char	*fill_line(char *stash)
 	char	*line;
 
 	i = 0;
-	if (!stash[0])
+	if (!stash[i])
 		return (NULL);
 	while (stash[i] && stash[i] != '\n')
 		i++;
-	line = malloc(sizeof(char) * (i + 2));
+	line = (char *)malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -88,27 +87,26 @@ char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
-	char	*result;
+	char	*joined;
 
 	if (!s1)
 	{
-		s1 = malloc(1);
-		if (!s1)
-			return (NULL);
+		s1 = (char *)malloc(sizeof(char));
 		s1[0] = '\0';
 	}
-	if (!s2)
+	if (!s1 || !s2)
 		return (NULL);
-	result = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!result)
-		return (free(s1), NULL);
+	joined = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));
+	if (joined == NULL)
+		return (NULL);
 	i = -1;
 	j = 0;
-	while (s1[++i])
-		result[i] = s1[i];
-	while (s2[j])
-		result[i++] = s2[j++];
-	result[i] = '\0';
+	if (s1)
+		while (s1[++i] != '\0')
+			joined[i] = s1[i];
+	while (s2[j] != '\0')
+		joined[i++] = s2[j++];
+	joined[ft_strlen(s1) + ft_strlen(s2)] = '\0';
 	free(s1);
-	return (result);
+	return (joined);
 }

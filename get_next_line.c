@@ -6,7 +6,7 @@
 /*   By: mazeghou <mazeghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:01:30 by mazeghou          #+#    #+#             */
-/*   Updated: 2024/11/13 22:33:16 by mazeghou         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:37:24 by mazeghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ size_t	ft_strlen(const char *str)
 
 char	*fill_stash(int fd, char *stash)
 {
-	int		bytes_read;
 	char	*buffer;
+	int		bytes_read;
 
-	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	bytes_read = 1;
-	while (!ft_strchr(buffer, '\n') && bytes_read != 0)
+	while (!ft_strchr(stash, '\n') && bytes_read != 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -51,8 +51,8 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
-		return (NULL);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
 	stash = fill_stash(fd, stash);
 	if (!stash)
 		return (NULL);
@@ -60,6 +60,7 @@ char	*get_next_line(int fd)
 	stash = create_stash(stash);
 	return (line);
 }
+
 /*
 int main(void)
 {
